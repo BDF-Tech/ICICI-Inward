@@ -1,0 +1,18 @@
+[
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Save",
+  "event_frequency": "All",
+  "modified": "2024-07-23 16:50:42.458409",
+  "module": "ICICI Collection",
+  "name": "Set Payment Entry",
+  "reference_doctype": "ICICI Collection",
+  "script": "if doc.txn_status == \"SUCCESS\":\n    doc1 = frappe.new_doc(\"Payment Entry\")\n    doc1.naming_series = \"ACC-PAY-.YYYY.-\"\n    doc1.payment_type = \"Receive\"\n    doc1.party_type = \"Customer\"\n    doc1.party = doc.merchant_tran_id\n    doc1.paid_amount = float(doc.payer_amount)\n    doc1.mode_of_payment = \"UPI\"\n    doc1.posting_date = frappe.utils.getdate(doc.txn_completion_date[:8])\n    doc1.paid_from_account_currency = \"INR\"\n    doc1.paid_to_account_currency = \"INR\"\n    doc1.source_exchange_rate = 1\n    doc1.base_paid_amount = float(doc.payer_amount)\n    doc1.received_amount = float(doc.payer_amount)\n    doc1.target_exchange_rate = 1\n    doc1.base_received_amount = doc.payer_amount\n    doc1.paid_to = frappe.get_doc(\"Mode of Payment\",\"UPI\").get(\"accounts\")[0].default_account\n    doc1.custom_icici_collection = doc.name\n    doc1.insert()\n    doc1.save()",
+  "script_type": "DocType Event"
+ }
+]

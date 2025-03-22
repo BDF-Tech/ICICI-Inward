@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Customer",
+  "enabled": 1,
+  "modified": "2024-06-07 17:35:50.661545",
+  "module": null,
+  "name": "Generate QR",
+  "script": "frappe.ui.form.on('Customer', {\n\tcustom_generate_qr(frm){\n\t   let msg = frappe.msgprint(\"Generating QR..\")\n\t    frappe.call({\n\t        method:\"icici_collection.icici_collection.doctype.icici_collection.icici_collection.generate_qr\",\n\t        args:{\n\t            \"name\":frm.doc.name\n\t        },\n\t        callback:(r)=>{\n\t            frm.doc.custom_qr_text = r.message\n\t            frm.refresh_field(\"custom_qr_text\")\n\t            frm.refresh_field(\"custom_qr_image\")\n\t            frappe.hide_msgprint(msg)\n\t            frappe.msgprint(\"QR Generated Successfully\")\n\t        }\n\t        \n\t    })\n\t}\n})",
+  "view": "Form"
+ }
+]

@@ -1,0 +1,160 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-06 17:21:33.927707",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "raw_encrypted_api_data_section",
+  "raw_encrypted_api_data",
+  "section_break_z1pmy",
+  "merchant_id",
+  "sub_merchant_id",
+  "terminal_id",
+  "bank_rrn",
+  "merchant_tran_id",
+  "payer_name",
+  "column_break_xj2dg",
+  "payer_mobile",
+  "payer_va",
+  "payer_amount",
+  "txn_status",
+  "txn_init_date",
+  "txn_completion_date",
+  "payer_acc_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "merchant_id",
+   "fieldtype": "Data",
+   "label": "Merchant Id",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sub_merchant_id",
+   "fieldtype": "Data",
+   "label": "Sub Merchant Id",
+   "read_only": 1
+  },
+  {
+   "fieldname": "terminal_id",
+   "fieldtype": "Data",
+   "label": "Terminal Id",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bank_rrn",
+   "fieldtype": "Data",
+   "label": "Bank RRN",
+   "read_only": 1
+  },
+  {
+   "fieldname": "merchant_tran_id",
+   "fieldtype": "Data",
+   "label": "Merchant Tran Id",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payer_name",
+   "fieldtype": "Data",
+   "label": "Payer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payer_mobile",
+   "fieldtype": "Data",
+   "label": "Payer Mobile",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payer_va",
+   "fieldtype": "Data",
+   "label": "Payer VA",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payer_amount",
+   "fieldtype": "Data",
+   "label": "Payer Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "txn_status",
+   "fieldtype": "Data",
+   "label": "Txn Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "txn_init_date",
+   "fieldtype": "Data",
+   "label": "Txn Init Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "txn_completion_date",
+   "fieldtype": "Data",
+   "label": "Txn Completion Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xj2dg",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "raw_encrypted_api_data",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "raw_encrypted_api_data_section",
+   "fieldtype": "Section Break",
+   "label": "Raw Encrypted Bank Callback Response",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_z1pmy",
+   "fieldtype": "Section Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payer_acc_type",
+   "fieldtype": "Data",
+   "label": "Payer Account Type",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Payment Entry",
+   "link_fieldname": "custom_icici_collection"
+  }
+ ],
+ "modified": "2024-06-26 16:44:02.724130",
+ "modified_by": "Administrator",
+ "module": "ICICI Collection",
+ "name": "ICICI Collection",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
