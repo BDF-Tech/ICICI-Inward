@@ -48,8 +48,8 @@ class BulkPaymentBankDetails(Document):
 	@frappe.whitelist()
 	def generate_excel(self):
 		data = {
-			'Debit Ac No': [], 'Beneficiary Ac No': [], 'Beneficiary Name': [], 'Amt': [], 'Pay Mod': [], 'Date': [], 'IFSC': [],
-			'ERP Code': [], 'Company Mail': [], 'Remarks': [], 'Payable Location': [], 'Print Location': [], 'Bene Mobile No.': [], 'Bene Email ID': [],
+			'Debit Ac No': [], 'Beneficiary Ac No': [],'ERP Code': [], 'Beneficiary Name': [], 'Amt': [], 'Pay Mod': [], 'Date': [], 'IFSC': [],
+			 'Company Mail': [], 'Remarks': [], 'Payable Location': [], 'Print Location': [], 'Bene Mobile No.': [], 'Bene Email ID': [],
 			'Bene add1': [], 'Bene add2': [], 'Bene add3': [], 'Bene add4': [], 'Add Details 1': [], 'Add Details 2': [], 'Add Details 3': [], 'Add Details 4': [], 'Add Details 5': []
 		}
 		month = ['Jan','Feb','Mar', 'Apl','May','Jun','Jul','Aug','Sep', 'Oct', 'Nov', 'Dec']
