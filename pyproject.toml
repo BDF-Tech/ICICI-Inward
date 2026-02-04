@@ -1,26 +1,23 @@
 [project]
 name = "icici_collection"
-authors = [
-    { name = "Erpdata", email = "contact@erpdata.in" }
-]
+version = "0.0.1"
 description = "Get response and set payment entry"
+authors = [
+  { name = "Erpdata", email = "contact@erpdata.in" }
+]
 requires-python = ">=3.10"
 readme = "README.md"
-dynamic = ["version"]
 dependencies = [
-    # "frappe~=15.0.0" # Installed and managed by bench.
-    "qrcode[pil]",
-    "bs4",
-    "pycryptodome",
-    "wheel",
-    "pandas",
-    "openpyxl"
+  "qrcode[pil]",
+  "bs4",
+  "pycryptodome",
+  "wheel",
+  "pandas",
+  "openpyxl"
 ]
 
-[build-system]
-requires = ["flit_core >=3.4,<4"]
-build-backend = "flit_core.buildapi"
+[tool.frappe]
+app_name = "icici_collection"
 
-# These dependencies are only installed when developer mode is enabled
-[tool.bench.dev-dependencies]
-# package_name = "~=1.1.0"
+[tool.bench.frappe-dependencies]
+frappe = ">=16.0.0,<17.0.0"
