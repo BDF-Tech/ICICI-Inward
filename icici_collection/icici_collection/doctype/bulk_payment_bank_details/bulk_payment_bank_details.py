@@ -52,7 +52,7 @@ class BulkPaymentBankDetails(Document):
 			 'Company Mail': [], 'Remarks': [], 'Payable Location': [], 'Print Location': [], 'Bene Mobile No.': [], 'Bene Email ID': [],
 			'Bene add1': [], 'Bene add2': [], 'Bene add3': [], 'Bene add4': [], 'Add Details 1': [], 'Add Details 2': [], 'Add Details 3': [], 'Add Details 4': [], 'Add Details 5': []
 		}
-		month = ['Jan','Feb','Mar', 'Apl','May','Jun','Jul','Aug','Sep', 'Oct', 'Nov', 'Dec']
+		month = ['Jan','Feb','Mar', 'Apr','May','Jun','Jul','Aug','Sep', 'Oct', 'Nov', 'Dec']
 
 		for item in self.get('items'):
 			data['Debit Ac No'].append(item.debit_ac_no)
