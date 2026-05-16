@@ -898,7 +898,7 @@
    "name": "Payment Entry-custom_bulk_payment_entry",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Bulk Payment Entry",
+   "options": "BDF Bulk Payment Entry",
    "owner": "tejal.kumbhar@erpdata.in",
    "permlevel": 0,
    "precision": "",
