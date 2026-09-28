@@ -54,3 +54,16 @@ frappe.ui.form.on('Bulk Payment Bank Details', {
         }
     }
 });
+function set_total_paid_amount(frm) {
+	let total = (frm.doc.items || []).reduce((sum, d) => sum + flt(d.paid_amount), 0);
+	frm.set_value("total_paid_amount", total);
+}
+
+frappe.ui.form.on('Bulk Payment Bank Details Item', {
+	paid_amount: function(frm) {
+		set_total_paid_amount(frm);
+	},
+	items_remove: function(frm) {
+		set_total_paid_amount(frm);
+	}
+});

@@ -8,12 +8,19 @@ from pandas import DataFrame, ExcelWriter
 from openpyxl import Workbook
 from datetime import datetime,date
 from frappe import _
+from frappe.utils import flt
 
 class BulkPaymentBankDetails(Document):
 	def autoname(self):
 		settings = frappe.get_doc('Bulk Payment Bank Details Settings')
 		count = len(frappe.get_all("Bulk Payment Bank Details",filters = {'posting_date':['=',date.today()]})) + 1
 		self.name = f"{settings.bank_code}_{datetime.now().day:02}{datetime.now().month:02}{datetime.now().year}_{count:03}"
+
+	def validate(self):
+		self.set_total_paid_amount()
+
+	def set_total_paid_amount(self):
+		self.total_paid_amount = sum(flt(d.paid_amount) for d in self.get("items"))
 
 	@frappe.whitelist()
 	def get_data(self):
@@ -44,6 +51,7 @@ class BulkPaymentBankDetails(Document):
 				"remark":self.remark,
 				"bank":bank_acc.bank
 			})
+		self.set_total_paid_amount()
    
 	@frappe.whitelist()
 	def generate_excel(self):
