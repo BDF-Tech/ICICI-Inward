@@ -19,8 +19,53 @@ class BulkPaymentBankDetails(Document):
 	def validate(self):
 		self.set_total_paid_amount()
 
+	def on_submit(self):
+		self.validate_bank_details()
+		self.validate_duplicate_payment_entries()
+
 	def set_total_paid_amount(self):
 		self.total_paid_amount = sum(flt(d.paid_amount) for d in self.get("items"))
+
+	def validate_bank_details(self):
+		missing = [
+			f"Row {d.idx}: {d.party_name or d.party_id}"
+			for d in self.get("items")
+			if not (d.debit_ac_no and d.beneficiary_ac_no and d.ifsc)
+		]
+		if missing:
+			frappe.throw(
+				_("Debit A/c No, Beneficiary A/c No or IFSC is missing in:") + "<br>" + "<br>".join(missing)
+			)
+
+	def validate_duplicate_payment_entries(self):
+		payment_entries = [d.payment_entry for d in self.get("items") if d.payment_entry]
+		if len(payment_entries) != len(set(payment_entries)):
+			frappe.throw(_("Same Payment Entry is added more than once"))
+
+		already_paid = self.get_payment_entries_in_other_documents(payment_entries)
+		if already_paid:
+			frappe.throw(
+				_("These Payment Entries are already in another submitted Bulk Payment Bank Details:")
+				+ "<br>"
+				+ "<br>".join(f"{pe} ({parent})" for pe, parent in already_paid.items())
+			)
+
+	def get_payment_entries_in_other_documents(self, payment_entries=None):
+		filters = {
+			"parenttype": "Bulk Payment Bank Details",
+			"docstatus": 1,
+			"parent": ["!=", self.name],
+			"payment_entry": ["is", "set"],
+		}
+		if payment_entries is not None:
+			if not payment_entries:
+				return {}
+			filters["payment_entry"] = ["in", payment_entries]
+
+		rows = frappe.get_all(
+			"Bulk Payment Bank Details Item", filters=filters, fields=["payment_entry", "parent"]
+		)
+		return {d.payment_entry: d.parent for d in rows}
 
 	@frappe.whitelist()
 	def get_data(self):
@@ -31,16 +76,31 @@ class BulkPaymentBankDetails(Document):
 			filters.update({"mode_of_payment":self.mode_of_payment})
 		if self.party_type:
 			filters.update({"party_type":self.party_type})
-		filters.update({"docstatus":0})
+		filters.update({"docstatus":0, "payment_type":"Pay"})
 
 		f =frappe.get_all('Payment Entry',filters,["*"])
+		already_added = self.get_payment_entries_in_other_documents()
 		self.items=[]
+		skipped = []
 		for d in f:
-			bank_acc = frappe.get_doc("Bank Account", d.party_bank_account)
-			company_account_no=frappe.db.get_value("Bank Account",d.bank_account,"bank_account_no")
+			if d.name in already_added:
+				skipped.append(f"{d.name} - {d.party_name}: already in {already_added[d.name]}")
+				continue
 
+			bank_acc = frappe.db.get_value(
+				"Bank Account", d.party_bank_account, ["bank_account_no", "branch_code", "bank"], as_dict=True
+			) if d.party_bank_account else None
+			company_account_no=frappe.db.get_value("Bank Account",d.bank_account,"bank_account_no") if d.bank_account else None
+
+			if not bank_acc or not bank_acc.bank_account_no or not bank_acc.branch_code:
+				skipped.append(f"{d.name} - {d.party_name}: party bank account / IFSC missing")
+				continue
+			if not company_account_no:
+				skipped.append(f"{d.name} - {d.party_name}: company bank account missing")
+				continue
 
 			self.append("items",{
+				"payment_entry":d.name,
 				"debit_ac_no":company_account_no,
 				"beneficiary_ac_no":bank_acc.bank_account_no,
 				"party_id":d.party,
@@ -52,7 +112,14 @@ class BulkPaymentBankDetails(Document):
 				"bank":bank_acc.bank
 			})
 		self.set_total_paid_amount()
-   
+
+		if skipped:
+			frappe.msgprint(
+				"<br>".join(skipped),
+				title=_("{0} Payment Entries skipped").format(len(skipped)),
+				indicator="orange",
+			)
+
 	@frappe.whitelist()
 	def generate_excel(self):
 		data = {
