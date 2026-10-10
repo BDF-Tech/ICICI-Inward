@@ -10,6 +10,7 @@ from Crypto.Cipher import PKCS1_v1_5
 import json
 import os
 from datetime import datetime
+from urllib.parse import quote
 
 
 class ICICICollection(Document):
@@ -57,7 +58,9 @@ class ICICICollection(Document):
 @frappe.whitelist()
 def generate_qr(name):
     url = frappe.db.get_single_value("Bulk Payment Bank Details Settings","url")
-    qr_str = url.format(name=name)
+    customer_name = frappe.db.get_value("Customer", name, "customer_name") or name
+    # {customer_name} is optional in the URL template, e.g. &tn={customer_name}
+    qr_str = url.format(name=name, customer_name=quote(customer_name[:50]))
     return get_qr_code(qr_str)
 
 

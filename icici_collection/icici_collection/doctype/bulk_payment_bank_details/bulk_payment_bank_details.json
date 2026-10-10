@@ -18,6 +18,7 @@
   "section_break_oizst",
   "get_records",
   "items",
+  "total_paid_amount",
   "amended_from",
   "posting_date"
  ],
@@ -72,13 +73,11 @@
    "options": "Bulk Payment Bank Details Item"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Bulk Payment Bank Details",
-   "print_hide": 1,
-   "read_only": 1
+   "fieldname": "total_paid_amount",
+   "fieldtype": "Float",
+   "label": "Total Paid Amount",
+   "read_only": 1,
+   "precision": "2"
   },
   {
    "fieldname": "amended_from",
@@ -105,7 +104,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-12 17:27:28.826868",
+ "modified": "2026-09-28 13:57:22.543507",
  "modified_by": "Administrator",
  "module": "ICICI Collection",
  "name": "Bulk Payment Bank Details",

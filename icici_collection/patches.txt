@@ -1,0 +1,4 @@
+[pre_model_sync]
+
+[post_model_sync]
+icici_collection.patches.set_total_paid_amount_in_bulk_payment_bank_details
